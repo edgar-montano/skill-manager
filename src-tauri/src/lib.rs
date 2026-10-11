@@ -4,13 +4,16 @@ mod detect;
 mod projects;
 mod skills;
 mod skillspector;
+pub mod workbench;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .manage(workbench::SharedService::new().expect("cannot open workbench database"))
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
+            workbench::workbench_request,
             commands::list_tool_entries,
             commands::list_skills,
             commands::set_skill_enabled,

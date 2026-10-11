@@ -92,6 +92,15 @@ pub fn files_from_tarball(tarball: &[u8], folder: &str) -> Result<(Vec<SkillFile
         if !safe_relative(rel) {
             return Err(format!("archive path '{rel}' is not safe to write"));
         }
+        if entry.header().size().unwrap_or(u64::MAX) > 8 * 1024 * 1024
+            || files
+                .iter()
+                .map(|f: &SkillFile| f.bytes.len())
+                .sum::<usize>()
+                > 64 * 1024 * 1024
+        {
+            return Err("Skill archive exceeds the extraction limit".into());
+        }
         let mut bytes = Vec::new();
         entry
             .read_to_end(&mut bytes)
@@ -189,15 +198,22 @@ pub fn install_skill_files(
         let _ = fs::remove_dir_all(&tmp);
         return Err(e);
     }
+    let backup = root
+        .parent()
+        .unwrap_or(root)
+        .join(".skill-manager-backups")
+        .join(format!("{name}-{nanos}"));
     if existing {
-        if let Err(e) = fs::remove_dir_all(&target) {
-            let _ = fs::remove_dir_all(&tmp);
-            return Err(format!("cannot remove existing skill: {e}"));
-        }
+        fs::create_dir_all(backup.parent().ok_or("Invalid backup path")?)
+            .map_err(|e| e.to_string())?;
+        fs::rename(&target, &backup).map_err(|e| format!("Cannot preserve existing skill: {e}"))?;
     }
     if let Err(e) = fs::rename(&tmp, &target) {
+        if existing {
+            let _ = fs::rename(&backup, &target);
+        }
         let _ = fs::remove_dir_all(&tmp);
-        return Err(format!("cannot finalize install: {e}"));
+        return Err(format!("Cannot finalize install: {e}"));
     }
     Ok(target.join("SKILL.md"))
 }

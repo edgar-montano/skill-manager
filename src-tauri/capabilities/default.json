@@ -2,15 +2,30 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "dialog:allow-open",
     {
       "identifier": "opener:allow-open-url",
       "allow": [
-        { "url": "https://github.com/abubakarsiddik31/skill-manager" },
-        { "url": "https://github.com/abubakarsiddik31/skill-manager/*" }
+        {
+          "url": "https://github.com/abubakarsiddik31/skill-manager"
+        },
+        {
+          "url": "https://github.com/abubakarsiddik31/skill-manager/*"
+        },
+        {
+          "url": "https://claude.ai/new"
+        },
+        {
+          "url": "https://chatgpt.com/"
+        },
+        {
+          "url": "https://github.com/edgar-montano/skill-manager"
+        }
       ]
     }
   ]

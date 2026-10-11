@@ -32,3 +32,6 @@ docs/superpowers/
 
 # Uncompressed demo master (keep local only)
 skill-manager-demo-v0.4.2-original.gif
+
+/test-results/
+/playwright-report/

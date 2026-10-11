@@ -150,7 +150,7 @@ fn scan_dir(tool: AgentTool, dir: &Path, scope: SkillScope, enabled: bool) -> Ve
 /// SKILL.md frontmatter is a flat key: value list, except block scalars
 /// (`description: >`), which are folded onto one line instead of
 /// surfacing as a bare `>`.
-fn parse_frontmatter(raw: &str) -> (String, String) {
+pub(crate) fn parse_frontmatter(raw: &str) -> (String, String) {
     let mut name = String::new();
     let mut description = String::new();
 

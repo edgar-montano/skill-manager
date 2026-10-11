@@ -1,3 +1,11 @@
+# Local agent workbench
+
+This fork adds a local browser workbench with skill metrics, native bundle installation, a Markdown editor, Claude plans, and AI chat handoff.
+
+Run `npm install` and `npm run dev`, then open `http://localhost:1420`. See [WORKBENCH.md](WORKBENCH.md) for usage, verification, and data boundaries. The original upstream documentation follows.
+
+---
+
 <div align="center">
 
 <img src="public/logo.svg" width="88" height="88" alt="Skill Manager logo" />
